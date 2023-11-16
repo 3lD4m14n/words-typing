@@ -44,16 +44,16 @@ export default function Game({ duration, min, max }: GameParams) {
         <h1 className="text-5xl font-bold">
           {isTimeOut ? "Game Finish" : "Type"}
         </h1>
-        <p className="font-mono">
+        <p className="font-mono text-xl">
           Time Remaining: {minutesRemaining}:
           {(secondsRemaining < 10 ? "0" : "") + secondsRemaining}
         </p>
-        <div className=" flex w-80 justify-between">
-          <div className="flex flex-col items-center text-xl">
+        <div className=" mt-8 flex w-80 justify-between text-3xl">
+          <div className="flex flex-col items-center">
             <p>Points</p>
             <p>{points}</p>
           </div>
-          <div className="flex flex-col items-center text-xl">
+          <div className="flex flex-col items-center">
             <p>Errors</p>
             <p>{errors}</p>
           </div>
