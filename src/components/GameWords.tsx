@@ -20,7 +20,7 @@ export default function GameWords({
   points,
 }: GameWordsProps) {
   return (
-    <div className=" flex gap-2">
+    <div className=" flex h-full w-screen flex-wrap items-center justify-around gap-2">
       {prev && <WordPrev word={prev} sufixKey={`prev${points}`} />}
       {curr && (
         <WordPlayable
