@@ -1,95 +1,137 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import useMinMaxWords from "@/hooks/useMinMaxWords";
+
+function ButtonDuration({
+  duration,
+  checked,
+  setDuration,
+}: {
+  duration: number;
+  checked?: boolean;
+  setDuration: (duration: number) => void;
+}) {
+  return (
+    <div className="flex h-[100px] w-[100px] cursor-pointer flex-col items-center justify-around rounded-xl bg-orange-500 text-lg font-semibold outline-dashed outline-transparent transition-colors hover:bg-orange-600">
+      <label
+        htmlFor={`duration-${duration}`}
+        className="flex h-3/4 w-full cursor-pointer flex-col items-center justify-around"
+      >
+        <h2>{duration}</h2>
+        <p>Minutes</p>
+      </label>
+      <input
+        type="radio"
+        checked={checked}
+        id={`duration-${duration}`}
+        name="duration"
+        value={duration}
+        onChange={(e) => {
+          if (e.target.checked) setDuration(duration);
+        }}
+        className="w-full cursor-pointer"
+      />
+    </div>
+  );
+}
+
+function Counter({
+  value,
+  increment,
+  decrement,
+}: {
+  value: number;
+  increment: () => void;
+  decrement: () => void;
+}) {
+  return (
+    <div className="flex h-10 w-28 rounded-full border-2 border-blue-950 text-xl">
+      <button
+        type="button"
+        onClick={increment}
+        className="flex w-full items-center justify-center rounded-l-full bg-orange-500 text-center transition-colors hover:bg-orange-600"
+      >
+        +
+      </button>
+      <p className="flex w-full items-center justify-center text-center">
+        {value}
+      </p>
+      <button
+        type="button"
+        onClick={decrement}
+        className="flex w-full items-center justify-center rounded-r-full bg-orange-500 text-center transition-colors hover:bg-orange-600"
+      >
+        -
+      </button>
+    </div>
+  );
+}
 
 export default function Home() {
+  const router = useRouter();
+  const [duration, setDuration] = useState(3);
+  const { min, max, incrementMin, decrementMin, incrementMax, decrementMax } =
+    useMinMaxWords(1, 10);
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    router.push(`duration/${duration}/minLen/${min}/maxLen/${max}`);
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <form
+      onSubmit={handleSubmit}
+      className=" flex h-screen w-screen flex-col items-center justify-evenly"
+    >
+      <div className="flex w-full flex-wrap justify-evenly gap-5">
+        <div className="flex flex-col items-center gap-2">
+          <h2 className="border-b-4 border-dotted border-blue-500 text-3xl font-bold">
+            Duration
+          </h2>
+          <ul className="flex flex-wrap items-center justify-center gap-3">
+            <li>
+              <ButtonDuration setDuration={setDuration} duration={1} />
+            </li>
+            <li>
+              <ButtonDuration setDuration={setDuration} duration={3} />
+            </li>
+            <li>
+              <ButtonDuration setDuration={setDuration} duration={5} />
+            </li>
+          </ul>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <h2 className="border-b-4 border-dotted border-blue-500 text-3xl font-bold">
+            Words Length
+          </h2>
+          <div className="flex h-[100px] w-full items-center justify-around">
+            <div className="flex flex-col items-center justify-center">
+              <h3 className="text-2xl font-bold">MIN</h3>
+              <Counter
+                value={min}
+                increment={incrementMin}
+                decrement={decrementMin}
+              />
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <h3 className="text-2xl font-bold">MAX</h3>
+              <Counter
+                value={max}
+                increment={incrementMax}
+                decrement={decrementMax}
+              />
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <button
+        type="submit"
+        className="rounded-full bg-orange-500 p-2 text-3xl hover:bg-orange-600"
+      >
+        Start
+      </button>
+    </form>
+  );
 }
