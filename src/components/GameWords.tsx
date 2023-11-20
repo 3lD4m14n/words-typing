@@ -21,17 +21,16 @@ export default function GameWords({
 }: GameWordsProps) {
   return (
     <div className=" flex h-full w-screen flex-wrap items-center justify-around gap-2">
-      {<WordPrev word={prev ? prev : " "} key={prev} sufixKey={`${prev}`} />}
+      {<WordPrev word={prev ? prev : " "} key={prev} />}
       {curr && (
         <WordPlayable
           word={curr}
           lettersColored={lettersTiped}
           error={errorTiped}
           key={curr}
-          sufixKey={curr}
         />
       )}
-      {next && <WordNext word={next} key={next} sufixKey={next} />}
+      {next && <WordNext word={next} key={next} />}
     </div>
   );
 }

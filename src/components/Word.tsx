@@ -5,7 +5,6 @@ export interface wordProps {
   color?: string;
   error?: boolean;
   lettersColored: number | "all";
-  sufixKey: string;
 }
 
 const Word = ({
@@ -13,11 +12,10 @@ const Word = ({
   color = DEFAULT_COLOR,
   error = false,
   lettersColored,
-  sufixKey,
 }: wordProps) => {
   if (!word) return null;
   const letters = word.split("");
-  //const numLetters = letters.length;
+  const sufixKey = word;
 
   return (
     <ul className=" flex w-[80vw] items-center justify-center gap-1 text-base/[7.1vw] landscape:w-[32vw] landscape:text-lg/[3.1vw]">
