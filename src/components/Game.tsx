@@ -7,14 +7,12 @@ import GameWords from "@/components/GameWords";
 
 export interface GameParams {
   duration: number;
-  min: number;
-  max: number;
 }
 
-export default function Game({ duration, min, max }: GameParams) {
+export default function Game({ duration }: GameParams) {
   const [points, setPoints] = useState<number>(0);
   const [errors, setErrors] = useState<number>(0);
-  const { prevWord, currWord, nextWord, setWord } = useWords(min, max);
+  const { prevWord, currWord, nextWord, setWord } = useWords();
   const { isTimeOut, minutesRemaining, secondsRemaining } =
     useCountdown(duration);
   const { lettersTipped, error, finish } = useTypingCheck(currWord, isTimeOut);
