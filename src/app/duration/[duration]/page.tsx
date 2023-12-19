@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { socket } from "@/socket";
 import useWords from "@/hooks/useWords";
 import useTypingCheck from "@/hooks/useTypingCheck";
 import useCountdown from "@/hooks/useCountdown";
@@ -9,10 +10,18 @@ export default function Game({ params }: { params: { duration: number } }) {
   const { duration } = params;
   const [points, setPoints] = useState<number>(0);
   const [errors, setErrors] = useState<number>(0);
-  const { prevWord, currWord, nextWord, setWord } = useWords();
+  const { prevWord, currWord, nextWord } = useWords(socket);
   const { isTimeOut, minutesRemaining, secondsRemaining } =
     useCountdown(duration);
   const { lettersTipped, error, finish } = useTypingCheck(currWord, isTimeOut);
+
+  useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect()
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (error) {
@@ -21,17 +30,10 @@ export default function Game({ params }: { params: { duration: number } }) {
   }, [error]);
 
   useEffect(() => {
-    const initializate = async () => {
-      if (finish) {
-        setWord();
-        let plus = currWord.length * (10 * duration - errors);
-        plus = plus < 1 ? 1 : plus;
-        setPoints(points + plus);
-      }
-    };
-
-    initializate();
-  }, [finish]);
+    if (finish) {
+      socket.emit("finish")
+    }
+  }, [finish, socket]);
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-around">
