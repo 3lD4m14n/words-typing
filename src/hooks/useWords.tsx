@@ -8,14 +8,23 @@ export default function useWords(socket: Socket) {
   const [nextWord, setNextWord] = useState<string>("");
 
   useEffect(() => {
-    socket.on("new word", (newWord: string) => {
+    const newWordHandle = (newWord: string) => {
       setWord(newWord);
-    });
+    }
 
-    socket.on("initialize", (currWord: string, nextWord: string) => {
+    const initializeHandle = (currWord: string, nextWord: string) => {
       setCurrWord(currWord);
       setNextWord(nextWord);
-    })
+    }
+
+    socket.on("new word", newWordHandle);
+
+    socket.on("initialize", initializeHandle);
+
+    return () => {
+      socket.off("new word", newWordHandle);
+      socket.off("initialize", initializeHandle);
+    }
   }, [socket]);
 
   const setWord = (newWord: string) => {
