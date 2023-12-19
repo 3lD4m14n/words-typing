@@ -9,7 +9,9 @@ export default function useWords(socket: Socket) {
 
   useEffect(() => {
     const newWordHandle = (newWord: string) => {
-      setWord(newWord);
+      setPrevWord(currWord);
+      setCurrWord(nextWord);
+      setNextWord(newWord);
     }
 
     const initializeHandle = (currWord: string, nextWord: string) => {
@@ -18,20 +20,13 @@ export default function useWords(socket: Socket) {
     }
 
     socket.on("new word", newWordHandle);
-
     socket.on("initialize", initializeHandle);
 
     return () => {
       socket.off("new word", newWordHandle);
       socket.off("initialize", initializeHandle);
     }
-  }, [socket]);
-
-  const setWord = (newWord: string) => {
-    setPrevWord(currWord);
-    setCurrWord(nextWord);
-    setNextWord(newWord);
-  };
+  }, [socket, prevWord, currWord, nextWord, setPrevWord, setCurrWord, setNextWord]);
 
   return {
     prevWord,
