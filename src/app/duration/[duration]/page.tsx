@@ -32,6 +32,10 @@ export default function Game({ params }: { params: { duration: number } }) {
   useEffect(() => {
     if (finish) {
       socket.emit("finish")
+
+      let plus = currWord.length * (10 * duration - errors);
+      plus = plus <= 0 ? 1 : plus;
+      setPoints(plus);
     }
   }, [finish, socket]);
 
