@@ -1,37 +1,32 @@
 "use client";
 import { useEffect, useState } from "react";
-import { API_GET_WORD } from "@/consts";
+import { Socket } from "socket.io-client";
 
-async function getWord() {
-  return fetch(`${API_GET_WORD}`)
-    .then((res) => res.json())
-    .then((data) => data.word);
-}
-
-export default function useWords() {
+export default function useWords(socket: Socket) {
   const [prevWord, setPrevWord] = useState<string>("");
   const [currWord, setCurrWord] = useState<string>("");
   const [nextWord, setNextWord] = useState<string>("");
+
   useEffect(() => {
-    const fetchWords = async () => {
-      const newCurrWord = await getWord();
-      setCurrWord(newCurrWord);
-      setNextWord(await getWord());
-    };
+    socket.on("new word", (newWord: string) => {
+      setWord(newWord);
+    });
 
-    fetchWords();
-  }, []);
+    socket.on("initialize", (currWord: string, nextWord: string) => {
+      setCurrWord(currWord);
+      setNextWord(nextWord);
+    })
+  }, [socket]);
 
-  const setWord = async () => {
+  const setWord = (newWord: string) => {
     setPrevWord(currWord);
     setCurrWord(nextWord);
-    setNextWord(await getWord());
+    setNextWord(newWord);
   };
 
   return {
     prevWord,
     currWord,
-    nextWord,
-    setWord,
+    nextWord
   };
 }
