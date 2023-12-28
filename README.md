@@ -1,36 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Game Rules
+The game is about correctly writing as many words as possible within a set time. The game has three different durations, and the longer the duration, the higher the bonus points the player will receive for not making mistakes.
 
-## Getting Started
+The game rewards the user for making the least amount of errors possible. The more you write without making mistakes, the more points you will earn, especially with a longer selected time.
 
-First, run the development server:
+points formula: `WordLength * (10 * duration - errors)`
 
+# Operation
+This project uses WebSockets for obtain the words from the server, so if you want to use this project in your machine, you should use the backend with it. The code of the backend is in [my github](https://github.com/3lD4m14n/words-typing-backend)
+# To Start the project
+to use this project you need config a .env.local file with `NEXT_PUBLIC_SOCKET_SERVER_URL` if you use the backend project the default port of the backend is 5050.
+
+## Comands to start
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
